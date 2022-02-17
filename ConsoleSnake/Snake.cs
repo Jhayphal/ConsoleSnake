@@ -1,0 +1,123 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+
+namespace ConsoleSnake
+{
+    internal sealed class Snake
+    {
+		private readonly char Surface;
+		private readonly ConsoleColor Color;
+
+		private Point Position;
+		private Snake Next;
+
+		public Snake(char surface, ConsoleColor color, Point position)
+        {
+			Surface = surface;
+			Color = color;
+			Position = position;
+        }
+
+		public bool InMyHead(Point point)
+        {
+			return Position == point;
+        }
+
+		public bool InsideMe(Point point)
+		{
+			if (Position.X == point.X && Position.Y == point.Y)
+				return true;
+
+			if (Next == null)
+				return false;
+
+			return Next.InsideMe(point);
+		}
+
+		private void DrawSelf(bool erase)
+        {
+			if (erase)
+				Painter.DrawChar(' ', Position);
+			else
+				Painter.DrawChar(Surface, Position, Color);
+        }
+
+		public bool HasCollisions(Rectangle world)
+        {
+			return HasCollisions(new HashSet<Point>(), ref world);
+        }
+
+		private bool HasCollisions(HashSet<Point> points, ref Rectangle world)
+		{
+			if (!points.Add(Position))
+				return true;
+
+			if (Position.X < 0 || Position.X >= world.Width)
+				return true;
+
+			if (Position.Y < 0 || Position.Y >= world.Height)
+				return true;
+
+			if (Next == null)
+				return false;
+
+			return Next.HasCollisions(points, ref world);
+		}
+
+		public void Eat()
+        {
+			if (Next == null)
+            {
+				Next = new Snake(Surface, Color, Position);
+
+				return;
+            }
+
+			Next.Eat();
+        }
+
+		public void DrawAndMove(SnakeHeadDirection direction)
+        {
+			DrawSelf(erase: false);
+
+			DrawAndMoveTail(ref Position);
+
+			switch (direction)
+            {
+				case SnakeHeadDirection.Up:
+					--Position.Y;
+
+					break;
+
+				case SnakeHeadDirection.Down:
+					++Position.Y;
+
+					break;
+
+				case SnakeHeadDirection.Left:
+					--Position.X;
+
+					break;
+
+				case SnakeHeadDirection.Right:
+					++Position.X;
+
+					break;
+
+				default:
+					throw new NotImplementedException(nameof(direction));
+			}
+        }
+
+		private void DrawAndMoveTail(ref Point position)
+        {
+			if (Next == null)
+				DrawSelf(erase: true);
+			else
+				Next.DrawAndMoveTail(ref Position);
+
+			Position = position;
+        }
+    }
+}
