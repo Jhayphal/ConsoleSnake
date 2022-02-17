@@ -10,7 +10,13 @@ namespace ConsoleSnake
 			= new ScoresBar();
 
 		private static readonly Snake snake 
-			= SnakeBuilder.Create(surface: '#', color: ConsoleColor.Cyan, length: 3);
+			= SnakeBuilder.Create(
+				new SnakeBuilderSettings 
+				{ 
+					Length = 1, 
+					Surface = '#', 
+					Color = ConsoleColor.Green
+				});
 
 		private static readonly SnakeFood food 
 			= new SnakeFood(surface: 'A', color: ConsoleColor.Yellow);
@@ -46,8 +52,7 @@ namespace ConsoleSnake
 
 			if (snake.HasCollisions(gameArea))
 			{
-				(sender as GameArea)?
-					.GameOver(TimeSpan.FromSeconds(1));
+				area.GameOver(TimeSpan.FromSeconds(1));
 
 				return;
 			}

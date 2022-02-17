@@ -6,18 +6,15 @@ namespace ConsoleSnake
 {
     internal sealed class Snake
     {
-		public static SnakeHeadDirection HeadDirection { get; set; }
-
-		private readonly char Surface;
-		private readonly ConsoleColor Color;
+		public static SnakeHeadDirection HeadDirection { get; set; } = SnakeHeadDirection.Right;
+		public static char Surface { get; set; } = '#';
+		public static ConsoleColor Color { get; set; } = ConsoleColor.Green;
 
 		private Point Position;
 		private Snake Next;
 
-		public Snake(char surface, ConsoleColor color, Point position)
+		public Snake(Point position)
         {
-			Surface = surface;
-			Color = color;
 			Position = position;
         }
 
@@ -71,7 +68,7 @@ namespace ConsoleSnake
         {
 			if (Next == null)
             {
-				Next = new Snake(Surface, Color, Position);
+				Next = new Snake(Position);
 
 				return;
             }

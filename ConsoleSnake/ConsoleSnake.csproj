@@ -51,6 +51,7 @@
     <Compile Include="ScoresScreen.cs" />
     <Compile Include="Snake.cs" />
     <Compile Include="SnakeBuilder.cs" />
+    <Compile Include="SnakeBuilderSettings.cs" />
     <Compile Include="SnakeFood.cs" />
     <Compile Include="SnakeHeadDirection.cs" />
   </ItemGroup>
