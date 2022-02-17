@@ -4,12 +4,12 @@ namespace ConsoleSnake
 {
     internal class Program
 	{
-		private static volatile bool _isRunning = false; // по большей мере нужно только для отладки
+		private static volatile bool _isRunning; // по большей мере нужно только для отладки
 
-		private static readonly ScoresBar scores 
+		private static ScoresBar scores 
 			= new ScoresBar();
 
-		private static readonly Snake snake 
+		private static Snake snake 
 			= SnakeBuilder.Create(
 				new SnakeBuilderSettings 
 				{ 
@@ -18,18 +18,48 @@ namespace ConsoleSnake
 					Color = ConsoleColor.Green
 				});
 
-		private static readonly SnakeFood food 
+		private static SnakeFood food 
 			= new SnakeFood(surface: 'A', color: ConsoleColor.Yellow);
 
-		private static readonly GameArea area
+		private static GameArea area
 			= new GameArea(frameRate: 60, speedInFramesPerSecond: 5);
+
+		private static void InitGame()
+        {
+			Console.Clear();
+
+			_isRunning = false;
+
+			scores
+				= new ScoresBar();
+
+			snake
+				= SnakeBuilder.Create(
+					new SnakeBuilderSettings
+					{
+						Length = 3,
+						Surface = '#',
+						Color = ConsoleColor.Green
+					});
+
+			food
+				= new SnakeFood(surface: 'A', color: ConsoleColor.Yellow);
+
+			area
+				= new GameArea(frameRate: 60, speedInFramesPerSecond: 5);
+		}
 
 		static void Main()
 		{
-			CreateFood();
+			do
+			{
+				InitGame();
+				CreateFood();
 
-            area.DrawFrame += Area_DrawFrame;
-			area.MainLoop();
+				area.DrawFrame += Area_DrawFrame;
+				area.MainLoop();
+			}
+			while (true);
 		}
 
 		private static void CreateFood()
