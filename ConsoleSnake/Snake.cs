@@ -6,6 +6,8 @@ namespace ConsoleSnake
 {
     internal sealed class Snake
     {
+		public static SnakeHeadDirection HeadDirection { get; set; }
+
 		private readonly char Surface;
 		private readonly ConsoleColor Color;
 
@@ -77,13 +79,13 @@ namespace ConsoleSnake
 			Next.Eat();
         }
 
-		public void DrawAndMove(SnakeHeadDirection direction)
+		public void DrawAndMove()
         {
 			DrawSelf(erase: false);
 
 			DrawAndMoveTail(ref Position);
 
-			switch (direction)
+			switch (HeadDirection)
             {
 				case SnakeHeadDirection.Up:
 					--Position.Y;
@@ -106,7 +108,7 @@ namespace ConsoleSnake
 					break;
 
 				default:
-					throw new NotImplementedException(nameof(direction));
+					throw new NotImplementedException(nameof(HeadDirection));
 			}
         }
 
@@ -118,6 +120,11 @@ namespace ConsoleSnake
 				Next.DrawAndMoveTail(ref Position);
 
 			Position = position;
+        }
+
+        public override string ToString()
+        {
+            return $"{Position.X}:{Position.Y}";
         }
     }
 }

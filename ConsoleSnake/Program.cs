@@ -61,7 +61,11 @@ namespace ConsoleSnake
             }
 
 			food.Draw();
-			snake.DrawAndMove(e);
+
+			if (!GameArea.IsOpposite(Snake.HeadDirection, e))
+				Snake.HeadDirection = e;
+
+			snake.DrawAndMove();
 
 			_isRunning = false;
 		}

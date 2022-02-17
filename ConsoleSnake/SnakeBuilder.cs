@@ -14,10 +14,12 @@ namespace ConsoleSnake
 
 			var snake = new Snake(surface, color, position);
 
+			Snake.HeadDirection = SnakeHeadDirection.Right;
+
 			foreach (var _ in Enumerable.Range(0, length))
 			{
 				snake.Eat();
-				snake.DrawAndMove(SnakeHeadDirection.Right);
+				snake.DrawAndMove();
 			}
 
 			return snake;

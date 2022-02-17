@@ -36,8 +36,7 @@ namespace ConsoleSnake
 
 					if (TryGetNewDirection(key, out var newDirection))
 						if (newDirection != Direction)
-							if (!IsOpposite(newDirection, Direction))
-								Direction = newDirection;
+							Direction = newDirection;
 				}
 			}
 			catch { }
@@ -88,7 +87,7 @@ namespace ConsoleSnake
 			);
 		}
 
-		private static bool IsOpposite(SnakeHeadDirection first, SnakeHeadDirection second)
+		public static bool IsOpposite(SnakeHeadDirection first, SnakeHeadDirection second)
         {
 			return first == SnakeHeadDirection.Left && second == SnakeHeadDirection.Right
 				|| first == SnakeHeadDirection.Up && second == SnakeHeadDirection.Down
