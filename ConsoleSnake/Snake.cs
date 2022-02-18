@@ -70,6 +70,8 @@ namespace ConsoleSnake
             {
 				Next = new Snake(Position);
 
+                // System.Threading.Tasks.Task.Run(() => Console.Beep(600, 222));
+
 				return;
             }
 

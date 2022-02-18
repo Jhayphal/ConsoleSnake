@@ -45,13 +45,13 @@ namespace ConsoleSnake
 			Clock.Dispose();
 		}
 
-		public void GameOver(TimeSpan await)
+		public void GameOver()
 		{
 			Clock.Enabled = false;
 
 			Painter.DrawTextCentered("Неудачник!", ConsoleColor.Red);
 
-            System.Threading.Thread.Sleep(await);
+			// Console.Beep();
 		}
 
 		private void Clock_Elapsed(object sender, ElapsedEventArgs e)
@@ -74,8 +74,13 @@ namespace ConsoleSnake
 			return new Rectangle
 			(
 				Point.Empty,
-				new Size(Console.WindowWidth, Console.WindowHeight)
+				GetSize()
 			);
+		}
+
+		public static Size GetSize()
+        {
+			return new Size(Console.WindowWidth, Console.WindowHeight);
 		}
 
 		public static Point GetCenter()

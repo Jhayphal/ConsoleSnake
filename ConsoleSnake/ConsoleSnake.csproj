@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game.cs" />
     <Compile Include="GameArea.cs" />
     <Compile Include="Painter.cs" />
     <Compile Include="Program.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="SnakeBuilderSettings.cs" />
     <Compile Include="SnakeFood.cs" />
     <Compile Include="SnakeHeadDirection.cs" />
+    <Compile Include="Sounds.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

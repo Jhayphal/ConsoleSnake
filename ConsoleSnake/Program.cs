@@ -1,108 +1,58 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ConsoleSnake
 {
     internal class Program
 	{
-		private static volatile bool _isRunning; // по большей мере нужно только для отладки
-
-		private static ScoresBar scores 
-			= new ScoresBar();
-
-		private static Snake snake 
-			= SnakeBuilder.Create(
-				new SnakeBuilderSettings 
-				{ 
-					Length = 1, 
-					Surface = '#', 
-					Color = ConsoleColor.Green
-				});
-
-		private static SnakeFood food 
-			= new SnakeFood(surface: 'A', color: ConsoleColor.Yellow);
-
-		private static GameArea area
-			= new GameArea(frameRate: 60, speedInFramesPerSecond: 5);
-
-		private static void InitGame()
-        {
-			Console.Clear();
-
-			_isRunning = false;
-
-			scores
-				= new ScoresBar();
-
-			snake
-				= SnakeBuilder.Create(
-					new SnakeBuilderSettings
-					{
-						Length = 3,
-						Surface = '#',
-						Color = ConsoleColor.Green
-					});
-
-			food
-				= new SnakeFood(surface: 'A', color: ConsoleColor.Yellow);
-
-			area
-				= new GameArea(frameRate: 60, speedInFramesPerSecond: 5);
-		}
-
 		static void Main()
 		{
+			while (true)
+				GameLoop();
+		}
+
+		static void GameLoop()
+        {
+			int speed;
+
 			do
 			{
-				InitGame();
-				CreateFood();
+				Console.Clear();
 
-				area.DrawFrame += Area_DrawFrame;
-				area.MainLoop();
+				Painter.DrawTextCentered("Укажите скорость игры [1 - 19]: ");
+
+				var lastLeftCursorPosition = Console.CursorLeft;
+
+				Painter.DrawText(
+					"(где 1 - быстро)", 
+					new Point(
+						lastLeftCursorPosition + 3, 
+						Console.CursorTop), 
+					ConsoleColor.DarkGray);
+
+				Console.CursorLeft = lastLeftCursorPosition;
+
+				Console.CursorVisible = true;
+
+				if (TryReadSpeed(out speed))
+					break;
+
+				Console.Clear();
+
+				Painter.DrawTextCentered("Нужно ввести число от 1 до 19 включительно!", ConsoleColor.Red);
+
+				System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
 			}
 			while (true);
+
+			new Game().Run(speed);
 		}
 
-		private static void CreateFood()
+		public static bool TryReadSpeed(out int value)
         {
-			do
-			{
-				food.CreateNew();
-			}
-			while (snake.InsideMe(food.Position));
-		}
+			var text = Console.ReadLine();
 
-        private static void Area_DrawFrame(object sender, SnakeHeadDirection e)
-        {
-			if (_isRunning)
-				return;
-
-			_isRunning = true;
-
-			var gameArea = GameArea.GetCurrentArea();
-
-			if (snake.HasCollisions(gameArea))
-			{
-				area.GameOver(TimeSpan.FromSeconds(1));
-
-				return;
-			}
-
-			if (snake.InMyHead(food.Position))
-            {
-				snake.Eat();
-				scores.Add();
-
-				CreateFood();
-            }
-
-			food.Draw();
-
-			if (!GameArea.IsOpposite(Snake.HeadDirection, e))
-				Snake.HeadDirection = e;
-
-			snake.DrawAndMove();
-
-			_isRunning = false;
-		}
+			return int.TryParse(text, out value) && value > 0 && value < 20;
+        }
 	}
 }
