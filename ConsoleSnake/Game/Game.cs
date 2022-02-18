@@ -14,6 +14,9 @@ namespace ConsoleSnake.Game
         private SnakeFood food;
         private GameArea area;
 
+		private bool useSpeedCompensation = false;
+		private bool waitNextFrame;
+
 		public readonly int Speed;
 
 		public GameProcess(int speed)
@@ -46,7 +49,7 @@ namespace ConsoleSnake.Game
 					new SnakeBuilderSettings
 					{
 						Length = 3,
-						Surface = 'o',
+						Surface = '0',
 						Color = ConsoleColor.Green
 					});
 
@@ -73,35 +76,46 @@ namespace ConsoleSnake.Game
 
 			_isRunning = true;
 
-			var gameArea = GameArea.GetCurrentArea();
-
-			if (snake.HasCollisions(gameArea))
+			try
 			{
-				area.GameOver();
-				
-				SoundsLibrary.GameOver();
+				if (useSpeedCompensation)
+					if (Snake.HeadDirection == SnakeHeadDirection.Up 
+						|| Snake.HeadDirection == SnakeHeadDirection.Down)
+						if (waitNextFrame = !waitNextFrame)
+							return; // пропускаем каждый второй кадр дабы выравнять скорость змейки при вертикальном движении
 
-				return;
+				var gameArea = GameArea.GetCurrentArea();
+
+				if (snake.HasCollisions(gameArea))
+				{
+					area.GameOver();
+
+					SoundsLibrary.GameOver();
+
+					return;
+				}
+
+				if (snake.InMyHead(food.Position))
+				{
+					SoundsLibrary.Eat();
+
+					snake.Eat();
+					scores.Add();
+
+					CreateFood();
+				}
+
+				food.Draw();
+
+				if (!GameArea.IsOpposite(Snake.HeadDirection, e))
+					Snake.HeadDirection = e;
+
+				snake.DrawAndMove();
 			}
-
-			if (snake.InMyHead(food.Position))
+			finally
 			{
-				SoundsLibrary.Eat();
-
-				snake.Eat();
-				scores.Add();
-
-				CreateFood();
+				_isRunning = false;
 			}
-
-			food.Draw();
-
-			if (!GameArea.IsOpposite(Snake.HeadDirection, e))
-				Snake.HeadDirection = e;
-
-			snake.DrawAndMove();
-
-			_isRunning = false;
 		}
 	}
 }
