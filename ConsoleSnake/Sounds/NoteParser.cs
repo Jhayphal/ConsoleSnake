@@ -5,17 +5,6 @@ namespace ConsoleSnake.Sounds
 {
     internal static class NoteParser
     {
-        public static IEnumerable<Note> GetDefault()
-        {
-            var melody = 
-                "A4:250 250 E3:250 250 A4:250 500 " +
-                "A4:250 250 E3:250 250 A4:250 500 " +
-                "E4:125 125 D4:125 125 C4:125 125 B4:125 125 A4:125 125 B4:125 125 C4:125 125 D4:125 125 " +
-                "A4:250 250 E3:250 250 A4:250 500";
-
-            return Parse(melody);
-        }
-
         public static IEnumerable<Note> Parse(string melody)
         {
             var commands = melody.Split(

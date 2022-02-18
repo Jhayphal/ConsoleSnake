@@ -29,9 +29,13 @@ namespace ConsoleSnake.Game
 				{
 					var key = Console.ReadKey(true).Key;
 
+					if (key == ConsoleKey.Escape)
+						break;
+
 					if (TryGetNewDirection(key, out var newDirection))
 						if (newDirection != Direction)
-							Direction = newDirection;
+							if (!IsOpposite(newDirection, Snake.HeadDirection))
+								Direction = newDirection;
 				}
 			}
 			catch { }

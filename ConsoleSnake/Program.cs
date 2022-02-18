@@ -28,7 +28,7 @@ namespace ConsoleSnake
 			{
 				Console.Clear();
 
-				Painter.DrawTextCentered($"Укажите скорость игры [1 - {UpToSpeed}]: ");
+				Painter.DrawTextCentered($"Укажите скорость игры [1 - {UpToSpeed}]: ", ConsoleColor.Gray);
 
 				var lastLeftCursorPosition = Console.CursorLeft;
 
@@ -63,20 +63,34 @@ namespace ConsoleSnake
 
 		private static int RequestSpeed()
         {
-			Console.ForegroundColor = ConsoleColor.Yellow;
+			while (true)
+			{
+				int first;
 
-			int first;
+				while (!TryReadInt(out first, out var _)) ;
 
-			while (!TryReadInt(out first)) ;
+				if (TryReadInt(out int second, out var errase))
+					return first * 10 + second;
 
-			if (TryReadInt(out int second))
-				return first * 10 + second;
+				if (errase)
+                {
+					--Console.CursorLeft;
+					Console.Write(' ');
+					--Console.CursorLeft;
 
-			return first;
+					continue;
+				}
+
+				return first;
+			}
         }
 
-		private static bool TryReadInt(out int value)
+		private static bool TryReadInt(out int value, out bool erase)
         {
+			erase = false;
+
+			Console.ForegroundColor = ConsoleColor.Yellow;
+
 			while (true)
 			{
 				var key = Console.ReadKey(true).Key;
@@ -87,6 +101,14 @@ namespace ConsoleSnake
 
 					return false;
 				}
+
+				if (key == ConsoleKey.Backspace || key == ConsoleKey.Delete)
+                {
+					value = 0;
+					erase = true;
+
+					return false;
+                }
 
 				if (key >= ConsoleKey.D0 && key <= ConsoleKey.D9)
 				{
