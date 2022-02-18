@@ -1,6 +1,6 @@
 ﻿using ConsoleSnake.Common;
 using ConsoleSnake.Hero;
-using ConsoleSnake.Sounds;
+using ConsoleSnake.Sounds.Melodies;
 using System;
 
 namespace ConsoleSnake.Game
@@ -41,23 +41,21 @@ namespace ConsoleSnake.Game
 
 			_isRunning = false;
 
-			scores
-				= new ScoresBar();
+			scores = new ScoresBar();
 
-			snake
-				= SnakeBuilder.Create(
-					new SnakeBuilderSettings
-					{
-						Length = 3,
-						Surface = '0',
-						Color = ConsoleColor.Green
-					});
+			snake = SnakeBuilder.Create
+			(
+				new SnakeBuilderSettings
+				{
+					Length = 3,
+					Surface = '0',
+					Color = ConsoleColor.Green
+				}
+			);
 
-			food
-				= new SnakeFood(surface: 'O', color: ConsoleColor.Yellow);
+			food = new SnakeFood(surface: 'O', color: ConsoleColor.Yellow);
 
-			area
-				= new GameArea(frameRate: Speed);
+			area = new GameArea(frameRate: Speed);
 		}
 
 		private void CreateFood()

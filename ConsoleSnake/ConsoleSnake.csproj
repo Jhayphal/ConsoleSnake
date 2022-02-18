@@ -61,8 +61,8 @@
     <Compile Include="Hero\SnakeFood.cs" />
     <Compile Include="Hero\SnakeHeadDirection.cs" />
     <Compile Include="Sounds\SoundProcessor.cs" />
-    <Compile Include="Sounds\SoundsLibrary.cs" />
-    <Compile Include="Sounds\SuperMarioMelody.cs" />
+    <Compile Include="Sounds\Melodies\SoundsLibrary.cs" />
+    <Compile Include="Sounds\Melodies\SuperMarioMelody.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

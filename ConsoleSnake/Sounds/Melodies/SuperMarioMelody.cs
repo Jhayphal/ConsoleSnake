@@ -1,4 +1,4 @@
-﻿namespace ConsoleSnake.Sounds
+﻿namespace ConsoleSnake.Sounds.Melodies
 {
     internal sealed class SuperMarioMelody : ArduinoСompatibleMelody
     {

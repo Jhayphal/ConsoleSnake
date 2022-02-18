@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ConsoleSnake.Sounds
+namespace ConsoleSnake.Sounds.Melodies
 {
     internal static class SoundsLibrary
     {
