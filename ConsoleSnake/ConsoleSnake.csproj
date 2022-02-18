@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sounds\ArduinoСompatibleMelody.cs" />
     <Compile Include="Sounds\ConsoleSoundInterface.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\GameArea.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Hero\SnakeHeadDirection.cs" />
     <Compile Include="Sounds\SoundProcessor.cs" />
     <Compile Include="Sounds\SoundsLibrary.cs" />
+    <Compile Include="Sounds\SuperMarioMelody.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -30,6 +30,13 @@ namespace ConsoleSnake.Sounds
             Run(() => Processor.Play(melody));
         }
 
+        public static void SuperMario()
+        {
+            var melody = new SuperMarioMelody().GetMelody();
+
+            Run(() => Processor.Play(melody));
+        }
+
         private static void Run(Action action)
         {
             if (Enabled)
