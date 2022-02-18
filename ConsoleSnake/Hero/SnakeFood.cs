@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ConsoleSnake.Common;
+using System;
 using System.Drawing;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Hero
 {
     internal class SnakeFood
     {

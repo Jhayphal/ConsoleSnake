@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ConsoleSnake.Common;
+using ConsoleSnake.Hero;
+using ConsoleSnake.Sounds;
+using System;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Game
 {
-    internal class Game
+    internal class GameProcess
     {
         private volatile bool _isRunning; // по большей мере нужно только для отладки
 
@@ -11,12 +14,15 @@ namespace ConsoleSnake
         private SnakeFood food;
         private GameArea area;
 
-		private int Speed;
+		public readonly int Speed;
 
-		public void Run(int speed)
+		public GameProcess(int speed)
         {
 			Speed = speed;
+        }
 
+		public void Run()
+        {
 			Initialize();
 			CreateFood();
 
@@ -48,7 +54,7 @@ namespace ConsoleSnake
 				= new SnakeFood(surface: 'O', color: ConsoleColor.Yellow);
 
 			area
-				= new GameArea(frameRate: 60, speedInFramesPerSecond: Speed);
+				= new GameArea(frameRate: Speed);
 		}
 
 		private void CreateFood()
@@ -72,12 +78,16 @@ namespace ConsoleSnake
 			if (snake.HasCollisions(gameArea))
 			{
 				area.GameOver();
+				
+				SoundsLibrary.GameOver();
 
 				return;
 			}
 
 			if (snake.InMyHead(food.Position))
 			{
+				SoundsLibrary.Eat();
+
 				snake.Eat();
 				scores.Add();
 

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ConsoleSnake.Game;
+using System;
 using System.Linq;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Hero
 {
     internal static class SnakeBuilder
     {

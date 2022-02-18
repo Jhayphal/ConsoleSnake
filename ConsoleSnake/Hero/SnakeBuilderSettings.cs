@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Hero
 {
     internal class SnakeBuilderSettings
     {

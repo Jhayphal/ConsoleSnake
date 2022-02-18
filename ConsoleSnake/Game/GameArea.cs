@@ -1,26 +1,21 @@
-﻿using System;
+﻿using ConsoleSnake.Common;
+using ConsoleSnake.Hero;
+using System;
 using System.Drawing;
 using System.Timers;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Game
 {
     internal sealed class GameArea
 	{
 		private readonly Timer Clock = new Timer();
 		
-		private readonly int SpeedInFramesPerSecond;
-		private int ToNextMoveFramesCount;
-
 		private volatile SnakeHeadDirection Direction = SnakeHeadDirection.Right;
 
 		public event EventHandler<SnakeHeadDirection> DrawFrame;
 
-		public GameArea(int frameRate, int speedInFramesPerSecond)
+		public GameArea(int frameRate)
         {
-			SpeedInFramesPerSecond = speedInFramesPerSecond;
-
-			ToNextMoveFramesCount = SpeedInFramesPerSecond;
-			
 			Clock.Interval = 1000d / frameRate;
 			Clock.Elapsed += Clock_Elapsed;
 			Clock.Start();
@@ -49,24 +44,14 @@ namespace ConsoleSnake
 		{
 			Clock.Enabled = false;
 
-			Painter.DrawTextCentered("Неудачник!", ConsoleColor.Red);
-
-			// Console.Beep();
+			Painter.DrawTextCentered("GAVE OVER", ConsoleColor.Red);
 		}
 
 		private void Clock_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			Console.CursorVisible = false;
 
-			if (SpeedInFramesPerSecond == 0)
-				throw new InvalidProgramException(nameof(SpeedInFramesPerSecond));
-
-			if (--ToNextMoveFramesCount == 0)
-			{
-				DrawFrame?.Invoke(this, Direction);
-
-				ToNextMoveFramesCount = SpeedInFramesPerSecond;
-			}
+			DrawFrame?.Invoke(this, Direction);
 		}
 
 		public static Rectangle GetCurrentArea()

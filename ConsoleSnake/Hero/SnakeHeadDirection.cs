@@ -1,4 +1,4 @@
-﻿namespace ConsoleSnake
+﻿namespace ConsoleSnake.Hero
 {
     internal enum SnakeHeadDirection
 	{

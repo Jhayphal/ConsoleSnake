@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Common
 {
     internal sealed class ScoresBar
     {

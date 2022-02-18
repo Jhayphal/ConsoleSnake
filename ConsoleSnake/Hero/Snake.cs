@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ConsoleSnake.Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Hero
 {
     internal sealed class Snake
     {
@@ -69,8 +70,6 @@ namespace ConsoleSnake
 			if (Next == null)
             {
 				Next = new Snake(Position);
-
-                // System.Threading.Tasks.Task.Run(() => Console.Beep(600, 222));
 
 				return;
             }

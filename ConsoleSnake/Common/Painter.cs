@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ConsoleSnake.Game;
+using System;
 using System.Drawing;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Common
 {
     internal static class Painter
     {

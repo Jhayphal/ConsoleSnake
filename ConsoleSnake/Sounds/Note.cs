@@ -1,32 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleSnake
+namespace ConsoleSnake.Sounds
 {
-    internal class SoundProcessor
-    {
-
-    }
-
     internal class Note
     {
         public int Frequency { get; set; }
 
         public int Duration { get; set; }
 
-        public Note(int frequency, int duration)
+        public bool IsPause => Frequency == 0;
+
+        public Note(int frequency, int duration) 
+            : this(duration)
         {
             if (frequency < 20)
                 throw new ArgumentOutOfRangeException(nameof(frequency));
 
+            Frequency = frequency;
+        }
+
+        public Note(int duration)
+        {
             if (duration < 20)
                 throw new ArgumentOutOfRangeException(nameof(duration));
 
-            Frequency = frequency;
             Duration = duration;
+        }
+
+        public static Note Pause(int duration)
+        {
+            return new Note(duration);
         }
 
         public static Note C(int duration = 500, int octave = 4)
@@ -83,21 +86,6 @@ namespace ConsoleSnake
 
             if (duration < 1)
                 throw new ArgumentOutOfRangeException(nameof(duration));
-        }
-    }
-
-    internal static class Sounds
-    {
-        public static bool Enabled { get; set; }
-
-        public static void Eat()
-        {
-            Run(() => Console.Beep());
-        }
-
-        private static void Run(Action action)
-        {
-            Task.Run(action);
         }
     }
 }
