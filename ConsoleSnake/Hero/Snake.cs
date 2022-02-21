@@ -5,124 +5,118 @@ using System.Drawing;
 
 namespace ConsoleSnake.Hero
 {
-    internal sealed class Snake
+	internal sealed class Snake
     {
-		public static SnakeHeadDirection HeadDirection { get; set; } = SnakeHeadDirection.Right;
-		public static char Surface { get; set; } = '#';
-		public static ConsoleColor Color { get; set; } = ConsoleColor.Green;
+        public char Surface { get; set; } = '0';
+        
+        public ConsoleColor Color { get; set; } = ConsoleColor.Green;
+		
+        public SnakeHeadDirection HeadDirection { get; set; } = SnakeHeadDirection.Right;
 
-		private Point Position;
-		private Snake Next;
-
-		public Snake(Point position)
+        private Point HeadLocation;
+        private readonly List<Point> Location = new List<Point>();
+        
+        public Snake(Point location)
         {
-			Position = position;
+            HeadLocation = location;
         }
 
-		public bool InMyHead(Point point)
+        private void Draw(Point point, char symbol)
         {
-			return Position == point;
+            Painter.DrawChar(symbol, point, Color);
         }
 
-		public bool InsideMe(Point point)
-		{
-			if (Position.X == point.X && Position.Y == point.Y)
-				return true;
-
-			if (Next == null)
-				return false;
-
-			return Next.InsideMe(point);
-		}
-
-		private void DrawSelf(bool erase)
+        public void DrawAndMove()
         {
-			if (erase)
-				Painter.DrawChar(' ', Position);
-			else
-				Painter.DrawChar(Surface, Position, Color);
-        }
+            Draw(HeadLocation, Surface);
 
-		public bool HasCollisions(Rectangle world)
-        {
-			return HasCollisions(new HashSet<Point>(), ref world);
-        }
+            DrawAndMoveTail();
 
-		private bool HasCollisions(HashSet<Point> points, ref Rectangle world)
-		{
-			if (!points.Add(Position))
-				return true;
-
-			if (Position.X < 0 || Position.X >= world.Width)
-				return true;
-
-			if (Position.Y < 0 || Position.Y >= world.Height)
-				return true;
-
-			if (Next == null)
-				return false;
-
-			return Next.HasCollisions(points, ref world);
-		}
-
-		public void Eat()
-        {
-			if (Next == null)
+            switch (HeadDirection)
             {
-				Next = new Snake(Position);
+                case SnakeHeadDirection.Up:
+                    --HeadLocation.Y;
 
-				return;
+                    break;
+
+                case SnakeHeadDirection.Down:
+                    ++HeadLocation.Y;
+
+                    break;
+
+                case SnakeHeadDirection.Left:
+                    --HeadLocation.X;
+
+                    break;
+
+                case SnakeHeadDirection.Right:
+                    ++HeadLocation.X;
+
+                    break;
+
+                default:
+                    throw new NotImplementedException(nameof(HeadDirection));
+            }
+        }
+
+        public void Eat()
+        {
+            if (Location.Count == 0)
+                Location.Add(HeadLocation);
+            else
+                Location.Add(Location[Location.Count - 1]);
+        }
+
+        public bool HasCollisions(Rectangle world)
+        {
+            if (Inside(world, HeadLocation))
+                return true;
+
+            var points = new HashSet<Point> { HeadLocation };
+
+            foreach (var point in Location)
+            {
+                if (!points.Add(point))
+                    return true;
+
+                if (Inside(world, point))
+                    return true;
             }
 
-			Next.Eat();
+            return false;
         }
 
-		public void DrawAndMove()
+        public bool InMyHead(Point point)
         {
-			DrawSelf(erase: false);
-
-			DrawAndMoveTail(ref Position);
-
-			switch (HeadDirection)
-            {
-				case SnakeHeadDirection.Up:
-					--Position.Y;
-
-					break;
-
-				case SnakeHeadDirection.Down:
-					++Position.Y;
-
-					break;
-
-				case SnakeHeadDirection.Left:
-					--Position.X;
-
-					break;
-
-				case SnakeHeadDirection.Right:
-					++Position.X;
-
-					break;
-
-				default:
-					throw new NotImplementedException(nameof(HeadDirection));
-			}
+            return HeadLocation == point;
         }
 
-		private void DrawAndMoveTail(ref Point position)
+        public bool InsideMe(Point point)
         {
-			if (Next == null)
-				DrawSelf(erase: true);
-			else
-				Next.DrawAndMoveTail(ref Position);
-
-			Position = position;
+            return InMyHead(point)
+                || Location.Contains(point);
         }
 
-        public override string ToString()
+        private void DrawAndMoveTail()
         {
-            return $"{Position.X}:{Position.Y}";
+            var endOfTail = Location[Location.Count - 1];
+
+            Draw(endOfTail, ' ');
+
+            for (int i = Location.Count - 1; i > 0; --i)
+                Location[i] = Location[i - 1];
+
+            Location[0] = HeadLocation;
+        }
+
+        private bool Inside(Rectangle rectangle, Point point)
+        {
+            if (point.X < rectangle.X
+                || point.X >= rectangle.Width)
+                return true;
+
+            return point.Y < rectangle.Y
+                || point.Y >= rectangle.Height;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace ConsoleSnake.Game
 			CreateFood();
 
 			area.DrawFrame += Area_DrawFrame;
-			area.MainLoop();
+			area.MainLoop(snake);
 
 			System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
 		}
@@ -65,6 +65,8 @@ namespace ConsoleSnake.Game
 				food.CreateNew();
 			}
 			while (snake.InsideMe(food.Position));
+
+			food.Draw();
 		}
 
 		private void Area_DrawFrame(object sender, SnakeHeadDirection e)
@@ -77,8 +79,8 @@ namespace ConsoleSnake.Game
 			try
 			{
 				if (useSpeedCompensation)
-					if (Snake.HeadDirection == SnakeHeadDirection.Up 
-						|| Snake.HeadDirection == SnakeHeadDirection.Down)
+					if (snake.HeadDirection == SnakeHeadDirection.Up 
+						|| snake.HeadDirection == SnakeHeadDirection.Down)
 						if (waitNextFrame = !waitNextFrame)
 							return; // пропускаем каждый второй кадр дабы выравнять скорость змейки при вертикальном движении
 
@@ -103,10 +105,8 @@ namespace ConsoleSnake.Game
 					CreateFood();
 				}
 
-				food.Draw();
-
-				if (!GameArea.IsOpposite(Snake.HeadDirection, e))
-					Snake.HeadDirection = e;
+				if (!GameArea.IsOpposite(snake.HeadDirection, e))
+					snake.HeadDirection = e;
 
 				snake.DrawAndMove();
 			}

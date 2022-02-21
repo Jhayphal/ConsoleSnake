@@ -21,7 +21,7 @@ namespace ConsoleSnake.Game
 			Clock.Start();
 		}
 
-		public void MainLoop()
+		public void MainLoop(Snake snake)
         {
 			try
 			{
@@ -34,7 +34,7 @@ namespace ConsoleSnake.Game
 
 					if (TryGetNewDirection(key, out var newDirection))
 						if (newDirection != Direction)
-							if (!IsOpposite(newDirection, Snake.HeadDirection))
+							if (!IsOpposite(newDirection, snake.HeadDirection))
 								Direction = newDirection;
 				}
 			}
