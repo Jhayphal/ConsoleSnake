@@ -48,7 +48,7 @@ namespace ConsoleSnake
 
 				Console.Clear();
 
-				Painter.DrawTextCentered($"Нужно ввести число от 1 до {UpToSpeed} включительно!", ConsoleColor.Red);
+				Painter.DrawTextCentered($"Нужно ввести число от 1 до {UpToSpeed} (включительно)", ConsoleColor.Red);
 
 				System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
 			}
